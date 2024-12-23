@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="服务端IP:"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="16dp"/>
+
+            <EditText
+                android:id="@+id/server_ip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="192.168.1.100"
+                android:textSize="24sp"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="端口号    :"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="16dp"/>
+
+            <EditText
+                android:id="@+id/server_port"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="8888"
+                android:textSize="24sp"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="#000000"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/connect"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="连接"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:background="@drawable/button_background"
+                android:textColor="#FFFFFF"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/disconnect"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="断开"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:background="@drawable/button_background"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="实际速度:"
+                android:textSize="25sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="16dp"/>
+
+            <TextView
+                android:id="@+id/speed"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:inputType="none"
+                android:text=" 0.0 "
+                android:textSize="25sp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工作状态:"
+                android:textSize="25sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="16dp"/>
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:inputType="none"
+                android:text=" 待机"
+                android:textSize="25sp"
+                android:background="@drawable/edit_text_background"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="启动"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:background="@drawable/button_background"
+                android:textColor="#FFFFFF" />
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/stop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="停止"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:background="@drawable/button_background"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/init"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="复位"
+                android:textSize="25sp"
+                android:background="@drawable/button_background"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

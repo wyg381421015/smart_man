@@ -1,0 +1,11 @@
+<!-- res/drawable/circle_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"> <!-- 使用 oval 形状 -->
+
+    <solid android:color="#55CBFF"/> <!-- 填充颜色 -->
+
+    <!-- 如果需要边框 -->
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/transparent"/> <!-- 可以选择是否添加 -->
+</shape>
