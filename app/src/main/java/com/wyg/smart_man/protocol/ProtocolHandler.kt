@@ -20,7 +20,7 @@ class ProtocolHandler {
 
     // 组帧方法
     fun frameData(command: String, parameters: ByteArray): ByteArray {
-        Log.d(TAG, "Framing data with command: $command and parameters: ${parameters.joinToString(", ")}")
+//        Log.d(TAG, "Framing data with command: $command and parameters: ${parameters.joinToString(", ")}")
 
         val startByte = FRAME_HEADER
         val endByte = FRAME_END
@@ -35,7 +35,7 @@ class ProtocolHandler {
             put(endByte)
         }.array()
 
-        Log.d(TAG, "Framed data: ${frame.joinToString(", ") { it.toString() }}")
+//        Log.d(TAG, "Framed data: ${frame.joinToString(", ") { it.toString() }}")
         return frame
     }
 
@@ -45,8 +45,8 @@ class ProtocolHandler {
 
         if(availableData == null)
             return validPayloads
-        else
-            Log.d(TAG, "Available data: ${availableData.joinToString(", ") { it.toString() }}")
+//        else
+//            Log.d(TAG, "Available data: ${availableData.joinToString(", ") { it.toString() }}")
 
         var offset = 0
 
@@ -54,24 +54,24 @@ class ProtocolHandler {
             val currentFrame = availableData.copyOfRange(offset, availableData.size)
 
             // 打印当前检查帧的实际内容
-            Log.d(TAG, "Checking frame from offset $offset: ${currentFrame.joinToString(", ") { it.toString() }}")
+//            Log.d(TAG, "Checking frame from offset $offset: ${currentFrame.joinToString(", ") { it.toString() }}")
 
             offset += if (isValidResponse(currentFrame)) {
                 // 提取有效负载
                 val payload = extractPayload(currentFrame)
                 validPayloads.add(payload)
 
-                Log.d(TAG, "Extracted payload: ${payload.joinToString(", ") { it.toString() }}")
+//                Log.d(TAG, "Extracted payload: ${payload.joinToString(", ") { it.toString() }}")
                 payload.size
             } else {
-                Log.e(TAG, "Invalid response at offset $offset with frame: ${currentFrame.joinToString(", ") { it.toString() }}")
+//                Log.e(TAG, "Invalid response at offset $offset with frame: ${currentFrame.joinToString(", ") { it.toString() }}")
 
                 // 这里决定要怎么处理无效的帧
                 1 // 或者更大的值，根据数据结构来决定
             }
         }
 
-        Log.d(TAG, "Valid payloads found: ${validPayloads.size}")
+//        Log.d(TAG, "Valid payloads found: ${validPayloads.size}")
         return validPayloads
     }
 
@@ -95,32 +95,6 @@ class ProtocolHandler {
         // 返回有效载荷列表或空列表
         return getValidPayloadFromBuffer()
     }
-
-//    // 解析响应方法
-//    fun handleResponse(response: String): ByteArray? {
-////        Log.d(TAG, "Handling response: $response")
-//
-//        // 使用 hexStringToByteArray 返回 IntArray
-//        val intArray = hexStringToByteArray(response)
-//
-//        if (intArray == null) {
-//            Log.e(TAG, "Hex string to byte array conversion failed")
-//            return null
-//        }
-//
-//        // 将 IntArray 转换为 ByteArray，确保不会产生负数
-//        val byteArray = intArray.map { it.toByte() }.toByteArray()
-//
-//        Log.d(TAG, "Converted result byte array: ${byteArray.joinToString(", ") { it.toString() }}")
-//
-////        return if (isValidResponse(byteArray)) {
-//////            Log.d(TAG, "Valid response received")
-////            extractPayload(byteArray)
-////        } else {
-////            Log.e(TAG, "Invalid response")
-////            null // 无效的响应
-////        }
-//    }
 
     // 辅助方法
     private fun hexStringToByteArray(hex: String): IntArray? {
@@ -154,43 +128,24 @@ class ProtocolHandler {
 
         // 使用无符号处理长度
         val length = data[HEADER_SIZE].toUByte().toInt() // 从帧中提取的长度
-        Log.d(TAG, "Validating response with length: $length, actual length: ${data.size}")
+//        Log.d(TAG, "Validating response with length: $length, actual length: ${data.size}")
 
         return data.size >= length// 检查长度
     }
-
-//    private fun extractPayload(data: ByteArray): ByteArray {
-//        val length = data[HEADER_SIZE].toUByte().toInt() // 提取帧长度
-//        return data.copyOfRange(HEADER_SIZE + LENGTH_SIZE, HEADER_SIZE + LENGTH_SIZE + length) // 提取有效负载
-//    }
-
-//    private fun isValidResponse(data: ByteArray): Boolean {
-//        if (data.size < (HEADER_SIZE + END_SIZE + LENGTH_SIZE)) {
-//            Log.e(TAG, "Data too short to be valid response: ${data.size}")
-//            return false // 数据长度至少为帧头、帧尾和长度部分
-//        }
-//        if (!isFrameHeaderValid(data)) {
-//            Log.e(TAG, "Frame header is invalid")
-//            return false
-//        }
-//        if (!isFrameEndValid(data)) {
-//            Log.e(TAG, "Frame end is invalid")
-//            return false
-//        }
-//
-//        // 使用无符号处理长度
-//        val length = data[6].toUByte().toInt() // 第三个字节为帧长度
-//        Log.d(TAG, "Validating response with length: $length, actual length: ${data.size}")
-//
-//        return data.size == length // 检查长度
-//    }
 
     private fun isFrameHeaderValid(data: ByteArray): Boolean {
         return data[0] == FRAME_HEADER[0] && data[1] == FRAME_HEADER[1] && data[2] == FRAME_HEADER[2] && data[3] == FRAME_HEADER[3] && data[4] == FRAME_HEADER[4] && data[5] == FRAME_HEADER[5]
     }
 
     private fun isFrameEndValid(data: ByteArray): Boolean {
+//        val length = data[HEADER_SIZE].toUByte().toInt()
+//        return data[length - 2] == FRAME_END[0] && data[length - 1] == FRAME_END[1]
         val length = data[HEADER_SIZE].toUByte().toInt()
+        // 确保 length 不超过数据的大小
+        if (length < 2 || length > data.size) {
+            Log.e(TAG, "Length is invalid: $length, data size: ${data.size}")
+            return false
+        }
         return data[length - 2] == FRAME_END[0] && data[length - 1] == FRAME_END[1]
     }
 
@@ -199,15 +154,20 @@ class ProtocolHandler {
 //        val length = ByteBuffer.wrap(data, HEADER_SIZE, LENGTH_SIZE).short.toInt() // 确保读取正确的长度
         val length = data[HEADER_SIZE].toUByte().toInt() // 从帧中提取的长度
 
+        if (length <= 0 || length > data.size) {
+            Log.w(TAG, "Payload length is zero or negative or exceeds data size: length = $length, data.size = ${data.size}")
+            return ByteArray(0) // 返回空数组以表示无效的负载
+        }
+
         // 打印提取的长度和数据
-        Log.d(TAG, "Extracting payload, extracted length: $length, from data: ${data.joinToString(", ") { it.toString() }}")
+//        Log.d(TAG, "Extracting payload, extracted length: $length, from data: ${data.joinToString(", ") { it.toString() }}")
 
         // 这里需要确保起始和结束范围是准确的
         val start = 0
         val end = start + length
 
         // 向调试信息添加关于数据的长度的详细信息
-        Log.d(TAG, "Attempting to extract payload from range [$start, $end] of data size: ${data.size}")
+//        Log.d(TAG, "Attempting to extract payload from range [$start, $end] of data size: ${data.size}")
 
         if (length <= 0 || end > data.size) {
             Log.w(TAG, "Payload length is zero or negative or exceeds data size: length = $length, data.size = ${data.size}")
@@ -216,15 +176,4 @@ class ProtocolHandler {
 
         return data.copyOfRange(start, end)
     }
-//    private fun extractPayload(data: ByteArray): ByteArray {
-//        val length = data[HEADER_SIZE].toUByte().toInt() // 提取帧长度
-//        // 修改这里的范围，以确保提取有效负载部分
-//        return data.copyOfRange(HEADER_SIZE + LENGTH_SIZE, HEADER_SIZE + LENGTH_SIZE + length)
-//    }
-
-//    private fun extractPayload(data: ByteArray): ByteArray {
-//        val payload = data.copyOfRange(0, data.size) // 提取有效负载
-////        Log.d(TAG, "Extracted payload: ${payload.joinToString(", ") { it.toString() }}")
-//        return payload
-//    }
 }

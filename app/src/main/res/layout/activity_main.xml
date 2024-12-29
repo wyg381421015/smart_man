@@ -307,7 +307,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/under_ip"
-                        android:hint="192.168.1.102"
+                        android:hint="192.168.1.125"
                         android:textColorHint="#000000"
                         android:textSize="25sp"
                         android:textColor="#000000"

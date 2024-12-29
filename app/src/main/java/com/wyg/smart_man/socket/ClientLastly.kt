@@ -2,6 +2,8 @@ package com.wyg.smart_man.socket
 
 import android.os.Handler
 import android.util.Log
+import android.util.Pair
+import com.wyg.smart_man.utils.MsgConstants
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -10,12 +12,6 @@ import java.net.Socket
 import java.net.SocketTimeoutException
 import kotlin.experimental.and
 
-//interface ConnectionListener {
-//    fun onConnected()
-//    fun onDisconnected()
-//    fun onError(errorMessage: String)
-//}
-
 /**
  * 客户端
  *
@@ -23,7 +19,7 @@ import kotlin.experimental.and
  * @param server_ip 服务器 IP 地址
  * @param server_port 服务器端口
  */
-class ClientLastly(private val clientId: String, var handler: Handler, var server_ip: String, var server_port: Int) : Runnable {
+class ClientLastly(private val clientId: String, private var handler: Handler, private var ip: String, private var port: Int) : Runnable {
     private val timeout = 60000
     private var clientSocket: Socket? = null
     private var printWriter: PrintWriter? = null
@@ -31,7 +27,7 @@ class ClientLastly(private val clientId: String, var handler: Handler, var serve
 
     override fun run() {
         try {
-            clientSocket = Socket(server_ip, server_port)
+            clientSocket = Socket(ip, port)
             clientSocket!!.soTimeout = timeout
 
             // 检查连接状态
@@ -40,7 +36,7 @@ class ClientLastly(private val clientId: String, var handler: Handler, var serve
                 printWriter = PrintWriter(clientSocket!!.getOutputStream())
 
                 val msg = handler.obtainMessage()
-                msg.arg1 = CLIENT_ARG
+                msg.arg1 = MsgConstants.CLIENT_ARG
                 msg.obj = Pair("ok", clientId)
                 handler.sendMessage(msg)
 
@@ -50,7 +46,7 @@ class ClientLastly(private val clientId: String, var handler: Handler, var serve
                 Log.e(TAG, "连接失败: 客户端未成功连接")
                 // 创建一个信息，表示连接失败
                 val errorMsg = handler.obtainMessage()
-                errorMsg.arg1 = CLIENT_ARG
+                errorMsg.arg1 = MsgConstants.CLIENT_ARG
                 errorMsg.obj = Pair("fail", clientId)
                 handler.sendMessage(errorMsg)
                 if(clientSocket != null)
@@ -61,7 +57,7 @@ class ClientLastly(private val clientId: String, var handler: Handler, var serve
             Log.e(TAG, "连接服务器失败: ${e.message}", e)
             // 创建一个信息，表示连接失败
             val errorMsg = handler.obtainMessage()
-            errorMsg.arg1 = CLIENT_ARG
+            errorMsg.arg1 = MsgConstants.CLIENT_ARG
             errorMsg.obj = Pair("fail", clientId)
             handler.sendMessage(errorMsg)
             if(clientSocket != null)
@@ -102,7 +98,7 @@ class ClientLastly(private val clientId: String, var handler: Handler, var serve
 //                        Log.d(TAG, "客户端接收到的数据为：$hexData")
 
                         val msg = handler.obtainMessage()
-                        msg.arg1 = CLIENT_INFO
+                        msg.arg1 = MsgConstants.CLIENT_INFO
                         msg.obj = Pair(hexData, clientId)
                         handler.sendMessage(msg)
 
@@ -206,27 +202,6 @@ class ClientLastly(private val clientId: String, var handler: Handler, var serve
         }.start() // 在新线程中执行发送操作
     }
 
-//    // 修改后的send函数，现在接受一个ByteArray作为输入
-//    fun sendHex(data: ByteArray) {
-//        // 将字节数组转换为十六进制字符串
-//        val hexString = byteArrayToHexString(data)
-//
-//        Thread {
-//            if (clientSocket?.isConnected == true && printWriter != null) {
-//                try {
-//                    // 发送数据（十六进制字符串）
-//                    printWriter!!.println(hexString)
-//                    printWriter!!.flush()
-//                    Log.d(TAG, "数据已发送: $hexString")
-//                } catch (e: IOException) {
-//                    Log.e(TAG, "发送数据时发生异常: ${e.message}", e)
-//                }
-//            } else {
-//                Log.e(TAG, "Socket未连接，无法发送数据")
-//            }
-//        }.start() // 在新线程中执行发送操作
-//    }
-
     private fun close() {
         try {
             printWriter?.close()
@@ -250,14 +225,12 @@ class ClientLastly(private val clientId: String, var handler: Handler, var serve
 
     private fun onDisconnected(){
         val msg = handler.obtainMessage()
-        msg.arg1 = CLIENT_ARG
+        msg.arg1 = MsgConstants.CLIENT_ARG
         msg.obj = Pair("disconnected", clientId)
         handler.sendMessage(msg)
     }
 
     companion object {
         private const val TAG = "tcp_client"
-        const val CLIENT_ARG = 0x13
-        const val CLIENT_INFO = 0x14
     }
 }

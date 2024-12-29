@@ -14,13 +14,13 @@
         android:layout_weight="1"
         android:textSize="24sp"
         android:textColor="@android:color/black"
-        android:paddingEnd="4dp"/>
+        android:paddingEnd="4dp" />
 
     <ImageView
-        android:id="@+id/arrow"
+        android:id="@+id/delete_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/ic_arrow_down"
+        android:src="@mipmap/ic_close"
         android:layout_gravity="center_vertical"
         android:scaleType="fitCenter" />
 </LinearLayout>
