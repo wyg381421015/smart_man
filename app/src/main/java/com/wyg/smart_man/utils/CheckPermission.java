@@ -15,11 +15,6 @@ import com.yanzhenjie.permission.RationaleListener;
 
 import java.util.List;
 
-/**
- * Created by solexit04 on 2017/7/6.
- * 动态权限
- */
-
 public abstract class CheckPermission
 {
     private Activity activity;
@@ -50,6 +45,8 @@ public abstract class CheckPermission
     //综合
     public static final int REQUEST_CODE_PERMISSION_OTHER = 109;
 
+    public static final int REQUEST_CODE_PERMISSION_NETWORK = 110;
+
     /**
      * 检测权限
      */
@@ -79,6 +76,38 @@ public abstract class CheckPermission
                             })
                             .start();
                     break;
+                case REQUEST_CODE_PERMISSION_NETWORK:
+                    AndPermission.with(activity)
+                        .requestCode(REQUEST_CODE_PERMISSION_NETWORK)
+                        .permission(
+                                Manifest.permission.ACCESS_NETWORK_STATE,
+                                Manifest.permission.INTERNET
+                        )
+                        .callback(permissionListener)
+                        .rationale(new RationaleListener() {
+                            @Override
+                            public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                                AndPermission.rationaleDialog(activity, rationale).show();
+                            }
+                        })
+                        .start();
+                break;
+                case REQUEST_CODE_PERMISSION_STORAGE:
+                    AndPermission.with(activity)
+                            .requestCode(REQUEST_CODE_PERMISSION_STORAGE)
+                            .permission(
+                                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            )
+                            .callback(permissionListener)
+                            .rationale(new RationaleListener() {
+                                @Override
+                                public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                                    AndPermission.rationaleDialog(activity, rationale).show();
+                                }
+                            })
+                            .start();
+                    break;
             }
         }
     }
@@ -103,8 +132,16 @@ public abstract class CheckPermission
             switch (requestCode)
             {
                 case REQUEST_CODE_PERMISSION_LOCATION:
-                    message = activity.getString(R.string.permission_location);
+                    message = activity.getString(R.string.permission_location); // 位置信息的提示
                     break;
+                case REQUEST_CODE_PERMISSION_STORAGE:
+                    message = activity.getString(R.string.permission_storage); // 存储权限的提示
+                    break;
+
+                case REQUEST_CODE_PERMISSION_NETWORK:
+                    message = activity.getString(R.string.permission_network); // 网络权限的提示
+                    break;
+
             }
 
             // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。

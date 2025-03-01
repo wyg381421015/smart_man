@@ -1,0 +1,22 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="oval">  <!-- 使用 oval 形状 -->
+            <solid android:color="#FF0000" /> <!-- 红色 -->
+            <padding
+                android:left="8dp"
+                android:right="8dp"
+                android:top="8dp"
+                android:bottom="8dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval"> <!-- 使用 oval 形状 -->
+            <solid android:color="#FF0000" /> <!-- 红色 -->
+            <padding
+                android:left="8dp"
+                android:right="8dp"
+                android:top="8dp"
+                android:bottom="8dp"/>
+        </shape>
+    </item>
+</selector>

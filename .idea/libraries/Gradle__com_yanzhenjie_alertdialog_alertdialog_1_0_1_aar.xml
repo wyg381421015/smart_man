@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.yanzhenjie.alertdialog:alertdialog:1.0.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9608d4723f5aaaa83df375e0788dd937/transformed/jetified-alertdialog-1.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9608d4723f5aaaa83df375e0788dd937/transformed/jetified-alertdialog-1.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c936b759cb34ae19443998d59f78b632/transformed/jetified-alertdialog-1.0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/c936b759cb34ae19443998d59f78b632/transformed/jetified-alertdialog-1.0.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yanzhenjie.alertdialog/alertdialog/1.0.1/b684cf065d94c40ad37ee71c6ebf558664b4d5ab/alertdialog-1.0.1-javadoc.jar!/" />

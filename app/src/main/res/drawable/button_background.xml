@@ -1,5 +1,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
+    <item android:state_pressed="true" android:state_enabled="true">
         <shape android:shape="rectangle">
             <solid android:color="#0056b3" />
             <corners android:radius="10dp" />
@@ -10,10 +10,23 @@
             android:bottom="8dp"/>
         </shape>
     </item>
-    <item>
+    <item android:state_enabled="true">
         <shape android:shape="rectangle">
             <solid android:color="#007BFF" />
             <corners android:radius="10dp" /> <!-- 同样可调整 -->
+            <padding
+                android:left="8dp"
+                android:right="8dp"
+                android:top="8dp"
+                android:bottom="8dp"/>
+        </shape>
+    </item>
+
+    <!-- 不可触发状态（请求未就绪） -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="#A9A9A9" /> <!-- 灰色，不可触发 -->
+            <corners android:radius="10dp" />
             <padding
                 android:left="8dp"
                 android:right="8dp"

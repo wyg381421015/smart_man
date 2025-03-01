@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import com.wyg.smart_man.R
 import com.wyg.smart_man.utils.DockingPoint
@@ -30,6 +31,8 @@ class CustomArrayAdapter(
         // 找到 TextView
         val textView: TextView = view.findViewById(R.id.text)
         val deleteIcon: ImageView = view.findViewById(R.id.delete_icon)
+
+//        textView.setBackgroundResource(R.drawable.edit_text_background) // 使用资源
 
         val item = getItem(position)
         textView.text = item

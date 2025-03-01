@@ -24,6 +24,7 @@ class ClientLastly(private val clientId: String, private var handler: Handler, p
     private var clientSocket: Socket? = null
     private var printWriter: PrintWriter? = null
     private var bufferedReader: BufferedReader? = null
+    private var isReadRunning = false
 
     override fun run() {
         try {
@@ -40,10 +41,12 @@ class ClientLastly(private val clientId: String, private var handler: Handler, p
                 msg.obj = Pair("ok", clientId)
                 handler.sendMessage(msg)
 
+                isReadRunning = true
                 startReading()
 //                startQueryBatteryInfo() // 启动保持活动线程
             } else {
                 Log.e(TAG, "连接失败: 客户端未成功连接")
+                isReadRunning = false
                 // 创建一个信息，表示连接失败
                 val errorMsg = handler.obtainMessage()
                 errorMsg.arg1 = MsgConstants.CLIENT_ARG
@@ -55,6 +58,7 @@ class ClientLastly(private val clientId: String, private var handler: Handler, p
         } catch (e: IOException) {
             e.printStackTrace()
             Log.e(TAG, "连接服务器失败: ${e.message}", e)
+            isReadRunning = false
             // 创建一个信息，表示连接失败
             val errorMsg = handler.obtainMessage()
             errorMsg.arg1 = MsgConstants.CLIENT_ARG
@@ -84,7 +88,7 @@ class ClientLastly(private val clientId: String, private var handler: Handler, p
                 val byteArray = ByteArray(1024) // 假设一个缓冲区大小
                 var bytesRead: Int
 
-                while (true) {
+                while (isReadRunning) {
                     try {
                         bytesRead = inputStream.read(byteArray) // 读取字节
                         if (bytesRead == -1) {
@@ -118,44 +122,6 @@ class ClientLastly(private val clientId: String, private var handler: Handler, p
         }.start()
     }
 
-//    private fun startReading() {
-//        Thread {
-//            try {
-//                bufferedReader = BufferedReader(InputStreamReader(clientSocket!!.getInputStream()))
-//                Log.d(TAG, "BufferedReader thread run")
-//
-//                while (true) {
-//                    try {
-//                        val content: String? = bufferedReader?.readLine()
-//                        if (content == null) {
-//                            if (clientSocket?.isConnected == false) {
-//                                Log.d(TAG, "Socket已断开连接.")
-//                                onDisconnected()
-//                            }
-//                            break // 读取到流的结尾，退出循环
-//                        }
-//
-//                        Log.d(TAG, "客户端接到的数据为：$content")
-//                        val msg = handler.obtainMessage()
-//                        msg.arg1 = CLIENT_INFO
-//                        msg.obj = Pair(content, clientId)
-//                        handler.sendMessage(msg)
-//                    }catch (e:SocketTimeoutException){
-//                        Log.e(TAG, "socket timeout: ${e.message}", e)
-//                        onDisconnected()
-//                        close() // 关闭连接
-//                        break
-//                    }
-//                }
-//            } catch (e: IOException) {
-//                Log.e(TAG, "IOException during reading from server: ${e.message}", e)
-//                onDisconnected()
-//            } finally {
-//                close() // 清理资源
-//            }
-//        }.start()
-//    }
-
     fun send(data: String) {
         Thread {
             if (clientSocket?.isConnected == true && printWriter != null) {
@@ -182,7 +148,7 @@ class ClientLastly(private val clientId: String, private var handler: Handler, p
     }
 
     fun sendHex(data: ByteArray) {
-        Thread {
+//        Thread {
             if (clientSocket?.isConnected == true) {
                 try {
                     // 直接获取 socket 输出流，并发送原始字节
@@ -199,11 +165,12 @@ class ClientLastly(private val clientId: String, private var handler: Handler, p
             } else {
                 Log.e(TAG, "Socket未连接，无法发送数据")
             }
-        }.start() // 在新线程中执行发送操作
+//        }.start() // 在新线程中执行发送操作
     }
 
-    private fun close() {
+    fun close() {
         try {
+            isReadRunning = false
             printWriter?.close()
             bufferedReader?.close()
             clientSocket?.close()

@@ -39,6 +39,8 @@
     <!-- permission -->
     <string name="permission_request_error">"申请权限失败"</string>
     <string name="permission_location">APP正常运行需要定位权限，被您拒绝或者系统发生错误申请失败，请您到权限设置页面手动授权，否则功能无法正常使用！</string>
+    <string name="permission_storage">APP正常运行需要存储权限，被您拒绝或者系统发生错误申请失败，请您到权限设置页面手动授权，否则功能无法正常使用！。</string>
+    <string name="permission_network">APP正常运行需要网络权限，被您拒绝或者系统发生错误申请失败，请您到权限设置页面手动授权，否则功能无法正常使用！。</string>
 
 
     <string-array name="spinner_items">
